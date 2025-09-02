@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { useLoader } from "@react-three/fiber";
 import { TextureLoader } from "three";
 import { RoundedCardGeometry } from "./RoundedCardGeometry";
@@ -29,6 +29,22 @@ const PlayingCard = ({
       segments,
     );
   }, [width, height, thickness, cornerRadius, segments]);
+
+
+  // Dispose textures when component unmounts or textures change
+  useEffect(() => {
+    return () => {
+      if (Array.isArray(loadedTextures)) {
+        loadedTextures.forEach(texture => {
+          if (texture && texture.dispose) {
+            texture.dispose();
+          }
+        });
+      } else if (loadedTextures && loadedTextures.dispose) {
+        loadedTextures.dispose();
+      }
+    };
+  }, [loadedTextures]);
 
   return (
     <mesh position={position} geometry={geometry} {...props}>
