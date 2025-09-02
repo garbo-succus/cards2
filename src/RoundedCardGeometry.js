@@ -1,4 +1,4 @@
-import { ExtrudeGeometry, Shape } from "three";
+import { ExtrudeGeometry, Shape, BufferAttribute } from "three";
 
 class RoundedCardGeometry extends ExtrudeGeometry {
   constructor(
@@ -64,6 +64,9 @@ class RoundedCardGeometry extends ExtrudeGeometry {
 
     // Set up material groups for different faces
     this.setupMaterialGroups();
+    
+    // Generate UV coordinates for textures
+    this.generateUVs();
   }
 
   setupMaterialGroups() {
@@ -129,6 +132,39 @@ class RoundedCardGeometry extends ExtrudeGeometry {
       this.addGroup(frontTriangles * 3, backTriangles * 3, 1);
       this.addGroup((frontTriangles + backTriangles) * 3, sideTriangles * 3, 2);
     }
+  }
+
+  generateUVs() {
+    const positions = this.attributes.position.array;
+    const normals = this.attributes.normal.array;
+    const vertexCount = positions.length / 3;
+    const uvs = new Float32Array(vertexCount * 2);
+
+    const width = this.parameters.width;
+    const height = this.parameters.height;
+
+    for (let i = 0; i < vertexCount; i++) {
+      const posIndex = i * 3;
+      const uvIndex = i * 2;
+      const normalIndex = i * 3;
+
+      const x = positions[posIndex];
+      const y = positions[posIndex + 1];
+      const nz = normals[normalIndex + 2];
+
+      // Map UV coordinates for front and back faces
+      if (Math.abs(nz) > 0.5) {
+        // Front or back face - map based on x,y position
+        uvs[uvIndex] = (x + width / 2) / width;     // U coordinate
+        uvs[uvIndex + 1] = (y + height / 2) / height; // V coordinate
+      } else {
+        // Side faces - simple mapping
+        uvs[uvIndex] = 0.5;
+        uvs[uvIndex + 1] = 0.5;
+      }
+    }
+
+    this.setAttribute('uv', new BufferAttribute(uvs, 2));
   }
 
   copy(source) {
