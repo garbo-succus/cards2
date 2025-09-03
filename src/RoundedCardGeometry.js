@@ -64,7 +64,7 @@ class RoundedCardGeometry extends ExtrudeGeometry {
 
     // Set up material groups for different faces
     this.setupMaterialGroups();
-    
+
     // Generate UV coordinates for textures
     this.generateUVs();
   }
@@ -155,7 +155,7 @@ class RoundedCardGeometry extends ExtrudeGeometry {
       // Map UV coordinates for front and back faces
       if (Math.abs(nz) > 0.5) {
         // Front or back face - map based on x,y position
-        uvs[uvIndex] = (x + width / 2) / width;     // U coordinate
+        uvs[uvIndex] = (x + width / 2) / width; // U coordinate
         uvs[uvIndex + 1] = (y + height / 2) / height; // V coordinate
       } else {
         // Side faces - simple mapping
@@ -164,7 +164,7 @@ class RoundedCardGeometry extends ExtrudeGeometry {
       }
     }
 
-    this.setAttribute('uv', new BufferAttribute(uvs, 2));
+    this.setAttribute("uv", new BufferAttribute(uvs, 2));
   }
 
   copy(source) {

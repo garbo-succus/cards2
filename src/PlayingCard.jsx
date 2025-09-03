@@ -5,7 +5,8 @@ import { RoundedCardGeometry } from "./RoundedCardGeometry";
 
 const PlayingCard = ({
   position = [0, 0, 0],
-  textures = [],
+  front = "",
+  back = "",
   color = "white",
   width = 0.0635,
   height = 0.089,
@@ -15,10 +16,8 @@ const PlayingCard = ({
   ...props
 }) => {
   // Load textures if provided
-  const loadedTextures = useLoader(
-    TextureLoader,
-    textures.length > 0 ? textures : [],
-  );
+  const textureUrls = [front, back].filter((url) => url !== "");
+  const loadedTextures = useLoader(TextureLoader, textureUrls);
 
   const geometry = useMemo(() => {
     return new RoundedCardGeometry(
@@ -30,12 +29,11 @@ const PlayingCard = ({
     );
   }, [width, height, thickness, cornerRadius, segments]);
 
-
   // Dispose textures when component unmounts or textures change
   useEffect(() => {
     return () => {
       if (Array.isArray(loadedTextures)) {
-        loadedTextures.forEach(texture => {
+        loadedTextures.forEach((texture) => {
           if (texture && texture.dispose) {
             texture.dispose();
           }
@@ -48,21 +46,17 @@ const PlayingCard = ({
 
   return (
     <mesh position={position} geometry={geometry} {...props}>
-      {[
-        <meshStandardMaterial 
-          key="0" 
-          attach="material-0" 
-          map={loadedTextures[0] || null}
-          color={color} 
-        />, // front
-        <meshStandardMaterial 
-          key="1" 
-          attach="material-1" 
-          map={loadedTextures[1] || null}
-          color={color} 
-        />, // back
-        <meshStandardMaterial key="2" attach="material-2" color={color} />, // sides
-      ]}
+      <meshStandardMaterial
+        attach="material-0"
+        map={loadedTextures[0]}
+        color={color}
+      />
+      <meshStandardMaterial
+        attach="material-1"
+        map={loadedTextures[1]}
+        color={color}
+      />
+      <meshStandardMaterial attach="material-2" color={color} />
     </mesh>
   );
 };

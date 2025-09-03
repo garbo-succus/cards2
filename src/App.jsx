@@ -9,9 +9,23 @@ function App() {
       <color attach="background" args={["#202020"]} />
       <ambientLight intensity={0.8} />
       <pointLight position={[10, 10, 10]} intensity={2} />
-      <PlayingCard position={[-0.1, 0, 0]} textures={['/front.avif', '/back.avif']} />
-      <PlayingCard position={[0, 0, 0]} textures={['/front2.avif', '/back.avif']} />
-      <PlayingCard position={[0.1, 0, 0]} textures={['/front2.avif', '/back.avif']} width={0.089} height={0.0635} />
+      <PlayingCard
+        position={[-0.1, 0, 0]}
+        front="/front.avif"
+        back="/back.avif"
+      />
+      <PlayingCard
+        position={[0, 0, 0]}
+        front="/front2.avif"
+        back="/back.avif"
+      />
+      <PlayingCard
+        position={[0.1, 0, 0]}
+        front="/front2.avif"
+        back="/back.avif"
+        width={0.089}
+        height={0.0635}
+      />
       <OrbitControls />
     </Canvas>
   );
