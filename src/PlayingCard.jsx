@@ -4,22 +4,19 @@ import { TextureLoader } from "three";
 import { RoundedCardGeometry } from "./RoundedCardGeometry";
 
 const PlayingCard = ({
-  position = [0, 0, 0],
-  front = "",
-  back = "",
+  front,
+  back,
   color = "white",
-  width = 0.0635,
-  height = 0.089,
-  thickness = 0.0003,
-  cornerRadius = 0.003,
-  segments = 8,
+  // Default to MTG card dimensions
+  size = [0.063, 0.088, 0.0003],
+  cornerRadius = 0.0025,
   ...props
 }) => {
-  // Load textures if provided
-  const textureUrls = [front, back].filter((url) => url !== "");
-  const loadedTextures = useLoader(TextureLoader, textureUrls);
+  const [width, height, thickness] = size;
+  const textures = useLoader(TextureLoader, [front, back]);
 
   const geometry = useMemo(() => {
+    const segments = 8;
     return new RoundedCardGeometry(
       width,
       height,
@@ -27,33 +24,29 @@ const PlayingCard = ({
       cornerRadius,
       segments,
     );
-  }, [width, height, thickness, cornerRadius, segments]);
+  }, [width, height, thickness, cornerRadius]);
 
-  // Dispose textures when component unmounts or textures change
-  useEffect(() => {
-    return () => {
-      if (Array.isArray(loadedTextures)) {
-        loadedTextures.forEach((texture) => {
-          if (texture && texture.dispose) {
-            texture.dispose();
-          }
-        });
-      } else if (loadedTextures && loadedTextures.dispose) {
-        loadedTextures.dispose();
-      }
-    };
-  }, [loadedTextures]);
+  useEffect(
+    () => () => {
+      textures.forEach((texture) => {
+        if (texture && texture.dispose) {
+          texture.dispose();
+        }
+      });
+    },
+    [textures],
+  );
 
   return (
-    <mesh position={position} geometry={geometry} {...props}>
+    <mesh geometry={geometry} {...props}>
       <meshStandardMaterial
         attach="material-0"
-        map={loadedTextures[0]}
+        map={textures[0]}
         color={color}
       />
       <meshStandardMaterial
         attach="material-1"
-        map={loadedTextures[1]}
+        map={textures[1]}
         color={color}
       />
       <meshStandardMaterial attach="material-2" color={color} />
