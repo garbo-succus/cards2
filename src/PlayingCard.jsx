@@ -4,8 +4,8 @@ import { TextureLoader } from "three";
 import { RoundedCardGeometry } from "./RoundedCardGeometry";
 
 const PlayingCard = ({
-  front,
-  back,
+  front = "/1px.png",
+  back = "/1px.png",
   color = "white",
   // Default to MTG card dimensions
   size = [0.063, 0.088, 0.0003],
