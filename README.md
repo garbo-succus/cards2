@@ -24,7 +24,21 @@ We want SVG to be the preferred image format.
 We will need an automerge file container once we support multi-file.
 We don't need to figure this out yet as we can directly embed JSON, but it would be good if the card file looked like a patchwork image/spreadsheet/whatever.
 ```json
-# 
+# This seems to be the latest format
+{
+  "@patchwork": {
+    "suggestedImportUrl": "@patchwork/file",
+    "type": "file"
+  },
+  "content": {
+    "test": true
+  },
+  "extension": "", # I dont like this
+  "mimeType": "",
+  "name": "data.json" # Or this (folders should hold the filenames)
+}
+```
+```json
 {
   "content": {
     "type": "text",
