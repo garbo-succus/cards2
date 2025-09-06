@@ -21,6 +21,8 @@ We want SVG to be the preferred image format.
 [https://tabletop-playground.com/knowledge-base/cards/]
 
 ### Patchwork (Ink & Switch)
+We will need an automerge file container once we support multi-file.
+We don't need to figure this out yet as we can directly embed JSON, but it would be good if the card file looked like a patchwork image/spreadsheet/whatever.
 ```json
 # 
 {
