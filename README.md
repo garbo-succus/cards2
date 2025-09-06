@@ -12,8 +12,8 @@ If a SVG image is used for the front side, it will be used for shape of the the 
 We want SVG to be the preferred image format.
 
 ## Non-goals
-Support for normal maps. By default, cards will have a tiling "Linen Finish" normal map.
-Card color (beyond existing Probability color support) -- default white.
+* Support for normal maps. By default, cards will have a tiling "Linen Finish" normal map.
+* Card color (beyond existing Probability color support) -- default white.
 
 ## What should the file format look like?
 
